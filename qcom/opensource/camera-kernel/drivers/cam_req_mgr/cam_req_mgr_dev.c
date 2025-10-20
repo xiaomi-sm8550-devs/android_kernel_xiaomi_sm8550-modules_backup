@@ -32,6 +32,7 @@
 #include "cam_compat.h"
 #include "camera_main.h"
 
+/* Xiaomi: enlarge from 30 to 200 */
 #define CAM_REQ_MGR_EVENT_MAX 200
 #define CAM_I3C_MASTER_COMPAT "qcom,geni-i3c"
 

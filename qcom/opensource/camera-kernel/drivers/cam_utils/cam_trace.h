@@ -92,6 +92,7 @@ TRACE_EVENT(cam_log_event,
 	)
 );
 
+/* xiaomi add I2C trace begin */
 TRACE_EVENT(cam_i2c_write_log_event,
 	TP_PROTO(const char *flag_name, const char *device_name, uint64_t req_id, int32_t j,
 			const char *w_r_status, uint32_t reg_addr, uint32_t reg_data),
@@ -155,6 +156,7 @@ TRACE_EVENT(opcode_name,
 		__entry->opcode_value, __get_str(opcode_name)
 	)
 );
+/* xiaomi add I2C trace end */
 
 TRACE_EVENT(cam_log_debug,
 	TP_PROTO(const char *fmt, va_list *args),

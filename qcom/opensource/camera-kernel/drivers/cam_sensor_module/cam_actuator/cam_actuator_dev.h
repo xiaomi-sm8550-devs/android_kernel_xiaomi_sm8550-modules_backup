@@ -27,7 +27,7 @@
 #include "cam_soc_util.h"
 #include "cam_debug_util.h"
 #include "cam_context.h"
-#include "cam_actuator_parklens_thread.h"
+#include "cam_parklens_thread.h" //xiaomi add
 
 #define NUM_MASTERS 2
 #define NUM_QUEUES 2
@@ -50,7 +50,7 @@ enum cam_actuator_state {
 	CAM_ACTUATOR_ACQUIRE,
 	CAM_ACTUATOR_CONFIG,
 	CAM_ACTUATOR_START,
-	CAM_ACTUATOR_PARKLENS,
+	CAM_ACTUATOR_PARKLENS, //xiaomi add
 };
 
 /**
@@ -123,8 +123,11 @@ struct cam_actuator_ctrl_t {
 	struct cam_actuator_query_cap act_info;
 	struct actuator_intf_params bridge_intf;
 	uint32_t last_flush_req;
+	/* xiaomi add for cci debug start */
 	void *cci_debug;
-	struct cam_actuator_parklens_ctrl_t parklens_ctrl;
+	/* xiaomi add for cci debug end */
+	struct cam_actuator_parklens_ctrl_t parklens_ctrl; //xiaomi add
+	uint32_t cci_io_fail_count;
 };
 
 /**

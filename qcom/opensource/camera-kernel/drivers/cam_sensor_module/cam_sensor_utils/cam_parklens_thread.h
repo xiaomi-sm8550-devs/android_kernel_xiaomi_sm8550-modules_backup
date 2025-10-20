@@ -1,5 +1,5 @@
-#ifndef _CAM_ACTUATOR_PARKLENS_THREAD_H_
-#define _CAM_ACTUATOR_PARKLENS_THREAD_H_
+#ifndef _CAM_PARKLENS_THREAD_H_
+#define _CAM_PARKLENS_THREAD_H_
 
 
 #include "cam_sensor_util.h"
@@ -20,6 +20,7 @@
 #define LINUX_EVENT_COOKIE 0x12341234
 
 #define PARKLENS_SLEEPTIME 10
+#define PARKLENS_LAST_SAVE_SETTING 2
 
 typedef struct task_struct parklens_thread_t;
 typedef wait_queue_head_t parklens_wait_queue_head_t;
@@ -72,9 +73,19 @@ struct cam_actuator_parklens_ctrl_t {
     parklens_atomic_t parklens_state;
 };
 
+struct cam_ois_parklens_ctrl_t {
+    parklens_thread_t *parklens_thread;
+    struct parklens_event start_event;
+    struct parklens_event shutdown_event;
+    parklens_atomic_t parklens_opcode;
+    parklens_atomic_t exit_result;
+    parklens_atomic_t parklens_state;
+    struct i2c_settings_array last_setting_array;
+};
+
 #define parklens_init_waitqueue_head(_q) init_waitqueue_head(_q)
 
-#define parklens_wake_up_interruptible(_q) wake_up_interruptible(_q)
+#define parklens_wake_up_interruptible(_q) wake_up(_q)
 
 #define parklens_wait_queue_timeout(wait_queue, condition, timeout) \
                     wait_event_timeout(wait_queue, condition, timeout)

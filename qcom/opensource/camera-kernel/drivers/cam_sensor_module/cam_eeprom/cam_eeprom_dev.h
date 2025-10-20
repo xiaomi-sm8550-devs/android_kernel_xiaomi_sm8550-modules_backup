@@ -198,7 +198,9 @@ struct cam_eeprom_ctrl_t {
 	uint16_t is_multimodule_mode;
 	struct i2c_settings_array wr_settings;
 	struct eebin_info eebin_info;
+	/* xiaomi add for cci debug start */
 	void *cci_debug;
+	/* xiaomi add for cci debug end */
 };
 
 int32_t cam_eeprom_update_i2c_info(struct cam_eeprom_ctrl_t *e_ctrl,

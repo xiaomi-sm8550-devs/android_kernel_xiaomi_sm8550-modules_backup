@@ -1,10 +1,10 @@
 # Makefile for use with Android's kernel/build system
 
-KBUILD_OPTIONS += CAMERA_KERNEL_ROOT=$(KERNEL_SRC)/$(M)
+KBUILD_OPTIONS += CAMERA_KERNEL_ROOT=$(shell pwd)
 KBUILD_OPTIONS += KERNEL_ROOT=$(KERNEL_SRC)
 KBUILD_OPTIONS += MODNAME=camera
 KBUILD_OPTIONS += MODNAME=cameralog
-KBUILD_OPTIONS += BOARD_PLATFORM=kalama
+KBUILD_OPTIONS += BOARD_PLATFORM=$(TARGET_BOARD_PLATFORM)
 KBUILD_OPTIONS += KBUILD_EXTRA_SYMBOLS=$(OUT_DIR)/../sm8550-modules/qcom/opensource/mmrm-driver/Module.symvers
 
 all: modules

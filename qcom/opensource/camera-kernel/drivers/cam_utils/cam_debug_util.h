@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2017-2021, The Linux Foundation. All rights reserved.
- * Copyright (c) 2022-2023, Qualcomm Innovation Center, Inc. All rights reserved.
+ * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
 #ifndef _CAM_DEBUG_UTIL_H_
@@ -17,8 +17,6 @@ extern unsigned int debug_priority;
 extern unsigned int debug_drv;
 
 #define CAM_IS_NULL_TO_STR(ptr) ((ptr) ? "Non-NULL" : "NULL")
-
-#define CAM_LOG_BUF_LEN                  512
 
 /* Module IDs used for debug logging */
 enum cam_debug_module_id {
@@ -73,6 +71,7 @@ enum cam_debug_log_level {
 	CAM_TYPE_MAX,
 };
 
+/* xiaomi add hw trigger - begin */
 /*
  *  cam_debug_hw_trigger()
  *
@@ -85,6 +84,7 @@ enum cam_debug_log_level {
  * @return    :  If there is no error, it will return 0
  */
 int cam_debug_hw_trigger(unsigned int module_id, bool status);
+/* xiaomi add hw trigger - end */
 
 /*
  * enum cam_debug_priority - Priority of debug log (0 = Lowest)
@@ -210,28 +210,24 @@ enum cam_log_print_type {
 	CAM_PRINT_BOTH  = 0x3,
 };
 
-#define __CAM_LOG_FMT KERN_INFO "%s: %s: %s: %d: %s "
+#define __CAM_LOG_FMT KERN_INFO "%s: %s: %s: %d "
 
 /**
  * cam_print_log() - function to print logs (internal use only, use macros instead)
  *
- * @type:      Corresponds to enum cam_log_print_type, selects if logs are printed in log buffer,
+ * @type: corresponds to enum cam_log_print_type, selects if logs are printed in log buffer,
  *        trace buffers or both
- * @module_id: Module calling the log macro
- * @tag:       Tag for log level
- * @func:      Function string
- * @line:      Line number
- * @fmt:       Formatting string
+ * @fmt:  formatting string
+ * @args: arguments corresponding to formatting string
  */
 
-void cam_print_log(int type, int module, int tag, const char *func,
-	int line, const char *fmt, ...);
+void cam_print_log(int type, const char *fmt, ...);
 
 #define __CAM_LOG(type, tag, module_id, fmt, args...)                               \
 ({                                                                                  \
-	cam_print_log(type,                                      \
-		module_id, tag, __func__,   \
-		__LINE__,  fmt, ##args);                                                  \
+	cam_print_log(type, __CAM_LOG_FMT fmt,                                      \
+		__CAM_LOG_TAG_NAME(tag), __CAM_DBG_MOD_NAME(module_id), __func__,   \
+		__LINE__, ##args);                                                  \
 })
 
 #define CAM_LOG(tag, module_id, fmt, args...) \
@@ -334,6 +330,7 @@ __CAM_LOG(CAM_PRINT_TRACE, CAM_TYPE_TRACE, __module, fmt, ##args)
 void cam_print_to_buffer(char *buf, const size_t buf_size, size_t *len, unsigned int tag,
 	unsigned long long module_id, const char *fmt, ...);
 
+/* xiaomi add hw trigger - begin */
 /*
  * CAM_DEBUG_HW_TRIGGER
  * @brief    :  This macro is used to set the value of GPIO and print the corresponding
@@ -348,6 +345,7 @@ void cam_print_to_buffer(char *buf, const size_t buf_size, size_t *len, unsigned
 		cam_debug_hw_trigger(__module, status);                       \
 		CAM_ERR(__module, fmt, ##args);                               \
 	}})
+/* xiaomi add hw trigger - end */
 
 /**
  * CAM_[ERR/WARN/INFO]_BUF

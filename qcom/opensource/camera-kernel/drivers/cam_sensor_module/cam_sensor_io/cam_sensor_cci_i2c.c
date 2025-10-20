@@ -181,7 +181,9 @@ static int32_t cam_cci_i2c_compare(struct cam_sensor_cci_client *client,
 	CAM_DBG(CAM_SENSOR, "addr %04x, %04x,compare data = %d", addr, reg_data, (int16_t)reg_data);
 
 	reg_data = reg_data & 0xFFFF;
+	/* xiaomi add I2C trace begin */
 	trace_poll_i2c_compare(data, (reg_data & ~data_mask));
+	/* xiaomi add I2C trace end */
 	if (data == (reg_data & ~data_mask))
 		return I2C_COMPARE_MATCH;
 	return I2C_COMPARE_MISMATCH;
@@ -209,6 +211,13 @@ int32_t cam_cci_i2c_poll(struct cam_sensor_cci_client *client,
 			addr, data, data_mask, data_type, addr_type);
 		if (!rc)
 			return rc;
+
+		if(rc < 0)
+		{
+			CAM_ERR(CAM_SENSOR, "rc %d, addr: 0x%x data: 0x%x dt: %d delay_ms %d",
+				rc, addr, data, data_type, delay_ms);
+			break;
+		}
 
 		usleep_range(1000, 1010);
 	}

@@ -1,4 +1,4 @@
-#include "cam_actuator_parklens_thread.h"
+#include "cam_parklens_thread.h"
 
 parklens_thread_t *parklens_thread_run(int32_t (*thread_handler)(void *data),
 	void *data,
